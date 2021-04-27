@@ -1,19 +1,26 @@
 # 在微信小程序中使用 ECharts
 
-> 本项目是 ECharts 的 Mpvue 小程序版本。开发者可以通过熟悉的 ECharts 配置方式及 Vue 语法，快速开发图表，满足各种可视化需求。
+> mpvue-echarts: 本项目是 ECharts 的 Mpvue 小程序版本。开发者可以通过熟悉的 ECharts 配置方式及 Vue 语法，快速开发图表，满足各种可视化需求。
+>
+> mpvue-echarts2: 本项目是原项目 [mpvue-echarts](https://github.com/F-loat/mpvue-echarts) 以及 Echarts 官方小程序原生版本 [echarts-for-weixin](https://github.com/ecomfe/echarts-for-weixin) 缝合版本，支持小程序新 Canvas 2D 接口。
 
-[![npm package](https://img.shields.io/npm/v/mpvue-echarts.svg)](https://npmjs.org/package/mpvue-echarts)
-[![npm downloads](https://img.shields.io/npm/dm/mpvue-echarts.svg)](https://npmjs.org/package/mpvue-echarts)
+[![npm package](https://img.shields.io/npm/v/mpvue-echarts2.svg)](https://npmjs.org/package/mpvue-echarts2)
+[![npm downloads](https://img.shields.io/npm/dm/mpvue-echarts2.svg)](https://npmjs.org/package/mpvue-echarts2)
 
 
 ## 扫码体验
+
+### mpvue-echarts
 ![小程序码](./static/qrcode.jpg)
+
+### echarts-for-weixin
+![小程序码](./static/weixin-app.jpg)
 
 
 ## 安装
 
 ``` bash
-npm i mpvue-echarts
+npm i mpvue-echarts2
 ```
 
 
@@ -21,20 +28,21 @@ npm i mpvue-echarts
 ``` vue
 <template>
   <div class="echarts-wrap">
-    <mpvue-echarts :echarts="echarts" :onInit="onInit" canvasId="demo-canvas" />
+    <mpvue-echarts2 :echarts="echarts" :onInit="onInit" canvasId="demo-canvas" />
   </div>
 </template>
 
 <script>
 import echarts from 'echarts'
-import mpvueEcharts from 'mpvue-echarts'
+import mpvueEcharts2 from 'mpvue-echarts2'
 
 let chart = null;
 
-function initChart(canvas, width, height) {
+function initChart(canvas, width, height, canvasDpr) {
   chart = echarts.init(canvas, null, {
     width: width,
-    height: height
+    height: height,
+    canvasDpr: canvasDpr // 增加了dpr
   });
   canvas.setChart(chart);
 
@@ -47,7 +55,7 @@ function initChart(canvas, width, height) {
 
 export default {
   components: {
-    mpvueEcharts
+    mpvueEcharts2
   },
   data () {
     return {
@@ -96,11 +104,15 @@ export default {
 
 ### 如何延迟加载图表？
 
-参见 [examples/lazyLoad](./examples/src/pages/demos/lazyLoad.vue) 的例子，可以在获取数据后再初始化数据。
+参见 [examples/lazyLoad](https://github.com/F-loat/mpvue-echarts/examples/src/pages/demos/lazyLoad.vue) 的例子，可以在获取数据后再初始化数据。
+
+<font color=#7E7129>注意将标签替换为mpvue-echarts2！</font>
 
 ### 如何在一个页面中加载多个图表？
 
-参见 [examples/multiCharts](./examples/src/pages/demos/multiCharts.vue) 的例子。
+参见 [examples/multiCharts](https://github.com/F-loat/mpvue-echarts/examples/src/pages/demos/multiCharts.vue) 的例子。
+
+<font color=#7E7129>注意将标签替换为mpvue-echarts2！</font>
 
 ### 图表变空白？
 
@@ -116,7 +128,9 @@ export default {
 
 本项目默认提供的 ECharts 文件是最新版本的包含所有组件文件，为了便于开发，提供的是未压缩的版本。远程调试或预览可以下载 [echarts.min.js](https://github.com/apache/incubator-echarts/blob/master/dist/echarts.min.js) 压缩版本。
 
-发布时，如果对文件大小要求更高，可以在 [ECharts 在线定制](http://echarts.baidu.com/builder.html)网页下载仅包含必要组件的包，并且选择压缩。
+发布时，如果对文件大小要求更高，可以在 [ECharts 在线定制](https://echarts.apache.org/zh/builder.html) 网页下载仅包含必要组件的包，并且选择压缩。
+
+<font color=#7E7129>将压缩包置入`node_modules/echarts/dict`路径下，引入页面并以echarts参数传入组件</font>
 
 ### 打包时出错 `ERROR in static/js/vendor.js from UglifyJs`
 
@@ -143,6 +157,18 @@ export default {
 
 
 ## 微信版本要求
+
+### Canvas 2d 版本要求
+
+最新版的 ECharts 微信小程序支持微信 Canvas 2d，当用户的基础库版本 >= 2.9.0 且没有设置 `force-use-old-canvas="true"` 的情况下，使用新的 Canvas 2d（默认）。
+
+使用新的 Canvas 2d 可以提升渲染性能，解决非同层渲染问题，<font color=#7E7129>这很重要</font>，强烈建议开启
+
+如果仍需使用旧版 Canvas，使用方法如下：
+
+```html
+<mpvue-echarts2 :echarts="echarts" canvas-id="xxx" force-use-old-canvas></mpvue-echarts2>
+```
 
 支持微信版本 >= 6.6.3，对应基础库版本 >= 1.9.91。尽可能使用更高版本的基础库版本。
 

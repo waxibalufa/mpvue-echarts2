@@ -1,3 +1,3 @@
-import { Ecahrts } from './echarts'
+import { MpvueEcharts } from './echarts'
 
-export default Ecahrts
+export default MpvueEcharts;

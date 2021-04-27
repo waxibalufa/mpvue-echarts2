@@ -1,10 +1,11 @@
 import Vue from 'vue'
 
 /** Echarts Component */
-export declare class Ecahrts extends Vue {
+export declare class MpvueEcharts extends Vue {
   echarts: object
-  onInit?: () => object
+  forceUseOldCanvas?: boolean
   canvasId?: string
+  onInit?: () => object
   lazyLoad?: boolean
   disableTouch?: boolean
   throttleTouch?: boolean
